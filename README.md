@@ -70,16 +70,17 @@ https://blog.csdn.net/qq_36622751/article/details/124807254
 # git说明
 https://www.runoob.com/git/git-basic-operations.html
 ## 常用命令
-|命令           |说明|
-|:---------------|:----------|
-|git pull        |拉取当前分支的远程代码 |
-|git add .       |将当前文件夹下的所有更改提交到暂存区  |
-|git commit -m ''|提交暂存区到本地仓库。|
-|git push        |将当前分支代码上传远程并合并|
-|git diff        |比较文件的不同，即暂存区和工作区的差异。   |
-|git branch -a   |列出所有分支|
-|git branch test |创建分支    |
-|git checkout test|切换分支    |
+|命令                |说明|
+|:-------------------|:----------|
+|git pull            |拉取当前分支的远程代码 |
+|git pull origin main|从远程main分支拉取代码到当前分支|
+|git add .           |将当前文件夹下的所有更改提交到暂存区  |
+|git commit -m ''    |提交暂存区到本地仓库。|
+|git push            |将当前分支代码上传远程并合并|
+|git diff            |比较文件的不同，即暂存区和工作区的差异。   |
+|git branch -a       |列出所有分支|
+|git branch test     |创建分支    |
+|git checkout test   |切换分支    |
 
 ## 代码提交规范
 每个人创建自己的分支。修改都是基于自己的分支，修改完成后提交merge请求，代码审核通过后merge到main分支。
