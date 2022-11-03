@@ -37,9 +37,9 @@ https://docs.qq.com/sheet/DWU1tSU9JZGlzdEFE?tab=BB08J2
 ![image](https://user-images.githubusercontent.com/28506614/199456658-b3dc2e5e-42e0-42c9-9b84-3165d1bc8a60.png)
 
 
-## 作业题目
+## 备选题目
 1、排序算法  
-2、随机森林  
+2、随机森林 https://www.jianshu.com/p/fdcda700d135  
 3、卷积神经网络  
 
 ## 时间安排
