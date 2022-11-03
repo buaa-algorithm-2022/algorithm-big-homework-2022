@@ -73,16 +73,16 @@ https://blog.csdn.net/qq_36622751/article/details/124807254
 
 ## 2、随机森林调研
 
-### 优点：1）有现成代码（python底层源码），但是不确定需不需要进行修改，直接使用容易撞车；2）python有很多封装好的包，可以使用，可以写的很简单，也可以很复杂
-### 难点：1）算法原理细节需要搞懂，涉及到数学知识；2）需要进行算法分析
+#### 优点：1）有现成代码（python底层源码），但是不确定需不需要进行修改，直接使用容易撞车；2）python有很多封装好的包，可以使用，可以写的很简单，也可以很复杂
+#### 难点：1）算法原理细节需要搞懂，涉及到数学知识；2）需要进行算法分析
 
-具体源码
+## 具体源码
 
 随机森林 https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py
 
 决策树 （随机森林是由决策树集成）https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/tree/_classes.py
 
-源码参数解读：
+## 源码参数解读：
 https://blog.csdn.net/ys676623/article/details/78111196
 
 
