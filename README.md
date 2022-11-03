@@ -48,7 +48,8 @@ https://docs.qq.com/sheet/DWU1tSU9JZGlzdEFE?tab=BB08J2
 ppt准备：2022年11月15日\~2022年11月20日，6天  
 课程答辩
 
-## 排序算法分析
+# 作业选题调研
+## 1、排序算法分析
 （1）【排序算法：选择排序，归并排序，快速排序，希尔排序，基数排序】，对所有算法进行分析并实现，分析其在不同规模的输入下单机性能变化情况；同时实现对于以下两种输入的排序:
 ①对数值的范围在[{-10}^{100},{10}^{100}]的数组排序，此项任务只能使用C或C++完成。
 ②利用多线程实现大规模数据的分布式排序，输入超过100万为最低大规模要求。
@@ -70,8 +71,22 @@ ppt准备：2022年11月15日\~2022年11月20日，6天
 ### 多线程实现大规模数据分布式排序
 https://blog.csdn.net/qq_36622751/article/details/124807254
 
+### 2、随机森林调研
+## 优点：1）有现成代码（python底层源码），但是不确定需不需要进行修改，直接使用容易撞车；2）python有很多封装好的包，可以使用，可以写的很简单，也可以很复杂
+## 难点：1）算法原理细节需要搞懂，涉及到数学知识；2）需要进行算法分析
 
-# git说明
+具体源码
+随机森林 https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py
+
+决策树 （随机森林是由决策树集成）https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/tree/_classes.py
+
+源码参数解读：
+https://blog.csdn.net/ys676623/article/details/78111196
+
+
+
+
+# 3、git说明
 https://www.runoob.com/git/git-basic-operations.html
 ## 常用命令
 |命令                |说明|
