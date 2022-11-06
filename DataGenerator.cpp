@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #include<time.h>
 #include<random>
-#include<iostream>
 
 using namespace std;
 
@@ -51,7 +50,6 @@ int main(int argc, char const *argv[])
             // 解决数字部分为空的情况
             if(num.size() == symbol) num = "0";
             ofs << num << endl;
-            if(num.size() - symbol < 80) cout << num.size() - symbol << endl;
         }
     }
     ofs.close();
