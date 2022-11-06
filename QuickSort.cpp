@@ -8,7 +8,8 @@ int partition(vector<int> &L, int low, int high)
 {
 	int temp = L[low];
 	int pivotkey = L[low];
-	while(low < high){
+	while(low < high)
+    {
 		while(low < high && L[high] >= pivotkey) --high;
 		L[low] = L[high];
 		while(low < high && L[low] <= pivotkey) ++low;
