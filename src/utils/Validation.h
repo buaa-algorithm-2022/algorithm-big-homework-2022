@@ -22,7 +22,7 @@ std::ostream& operator<<(std::ostream& os, const BigInteger& bigInteger) {
 }
 
 template <typename T>
-void checkIsInOrder(std::vector<T>& arr, bool ascent = true) {
+bool checkIsInOrder(std::vector<T>& arr, bool ascent = true, bool log = true) {
     bool res = true;
     for (int i = 0; i < arr.size()-1; ++i) {
         if ((ascent && arr[i] > arr[i+1]) || (!ascent && arr[i] < arr[i+1])) {
@@ -30,7 +30,9 @@ void checkIsInOrder(std::vector<T>& arr, bool ascent = true) {
             break;
         }
     }
-    std::cout << "Is in order: " << (res ? "YES" : "NO") << std::endl;
+    if (log)
+        std::cout << "Is in order: " << (res ? "YES" : "NO") << std::endl;
+    return res;
 }
 
 #endif //ALGORITHM_BIG_HOMEWORK_2022_VALIDATION_H

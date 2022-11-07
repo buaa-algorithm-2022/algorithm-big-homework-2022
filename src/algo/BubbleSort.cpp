@@ -6,13 +6,13 @@
 #include <algorithm>
 
 #include "BigInteger.h"
-//#include "BigInteger.cpp"
 #include "Random.h"
 #include "Validation.h"
+#include "Sortable.h"
 
 using namespace std;
 
-class BubbleSort {
+class BubbleSort: public Sortable {
 public:
     void sort(vector<BigInteger>& arr) {
         size_t n = arr.size();
@@ -23,15 +23,19 @@ public:
             }
         }
     }
+
+    std::string toName() const {
+        return "BubbleSort";
+    }
 };
 
-int main() {
-    auto nums = rand_bigint_arr(20);
-    cout << "Before:" << nums << endl;
-    checkIsInOrder(nums);
-
-    BubbleSort().sort(nums);
-    cout << "After:" << nums << endl;
-    checkIsInOrder(nums);
-    return 0;
-}
+//int main() {
+//    auto nums = rand_bigint_arr(20);
+//    cout << "Before:" << nums << endl;
+//    checkIsInOrder(nums);
+//
+//    BubbleSort().sort(nums);
+//    cout << "After:" << nums << endl;
+//    checkIsInOrder(nums);
+//    return 0;
+//}
