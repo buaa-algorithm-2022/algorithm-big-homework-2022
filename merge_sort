@@ -10,7 +10,7 @@ void merge(int arr[],int tempArr[],int left,int mid,int right){
 	int pos = left;
 	//合并
 	while(l_pos<=mid && r_pos<=right){
-		if(arr[l_pos]<arr[r_pos])
+		if(arr[l_pos]<=arr[r_pos])
 			tempArr[pos++] = arr[l_pos++]; 
 		else
 			tempArr[pos++] = arr[r_pos++];
