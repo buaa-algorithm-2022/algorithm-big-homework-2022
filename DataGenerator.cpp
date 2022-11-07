@@ -55,6 +55,7 @@ void generate(string type, string output, int lines) {
     if (!fout.is_open())
     {
         cout << "打开文件失败" << endl;
+        return;
     }
     srand((unsigned)time(NULL));
     if (type == "0")

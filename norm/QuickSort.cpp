@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 {
     vector<int> data;
     loadNormData(data, "quick_sort_data.txt");
-    QuickSort(data, 0, data.size());
+    QuickSort(data, 0, data.size() - 1);
     writeNormResult(data, "quick_sort_result.txt");
     return 0;
 }
