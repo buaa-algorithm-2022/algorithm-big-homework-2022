@@ -1,5 +1,8 @@
 #include<iostream>
 #include<vector>
+#include<fstream>
+
+#include "../DataGenerator.cpp"
 
 using namespace std;
 
@@ -31,21 +34,9 @@ void QuickSort(vector<int> &L, int low, int high)
 
 int main(int argc, char const *argv[])
 {
-    vector<int> test;
-    test.push_back(1);
-    test.push_back(2);
-    test.push_back(3);
-    test.push_back(3);
-    test.push_back(9);
-    test.push_back(8);
-
-    cout << test.size() << endl;
-    QuickSort(test, 0, test.size() - 1);
-    for (int i = 0; i < test.size(); i++)
-    {
-        cout << test[i] << " ";
-    }
-    cout << endl;
-    
+    vector<int> data;
+    loadNormData(data, "quick_sort_data.txt");
+    QuickSort(data, 0, data.size());
+    writeNormResult(data, "quick_sort_result.txt");
     return 0;
 }

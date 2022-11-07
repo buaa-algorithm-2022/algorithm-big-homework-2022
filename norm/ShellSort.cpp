@@ -1,6 +1,8 @@
 #include<vector>
 #include<iostream>
 
+#include "../DataGenerator.cpp"
+
 using namespace std;
 
 void ShellSort(vector<int> &L)
@@ -26,20 +28,9 @@ void ShellSort(vector<int> &L)
 
 int main(int argc, char const *argv[])
 {
-    vector<int> test;
-    test.push_back(9);
-    test.push_back(1);
-    test.push_back(2);
-    test.push_back(3);
-    test.push_back(3);
-    test.push_back(8);
-
-    ShellSort(test);
-
-    for (int i = 0; i < test.size(); i++)
-    {
-        cout << test[i] << " ";
-    }
-    cout << endl;
+    vector<int> data;
+    loadNormData(data, "shell_sort_data.txt");
+    ShellSort(data);
+    writeNormResult(data, "shell_sort_result.txt");
     return 0;
 }

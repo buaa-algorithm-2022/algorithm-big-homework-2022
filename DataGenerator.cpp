@@ -3,20 +3,59 @@
 #include<stdlib.h>
 #include<time.h>
 #include<random>
+#include<iostream>
 
 using namespace std;
 
-int main(int argc, char const *argv[])
+// 从input目录下读取文件fileName
+vector<int> loadNormData(vector<int> &data, string fileName)
 {
-    ofstream ofs;
-    // 输出文件（包括路径）
-    string output = argv[1];
-    // 0表示int, 1表示bigint
-    string type = argv[2];
-    int lines = atoi(argv[3]);
+    string input = "../input/";
+    input.append(fileName);
+    ifstream fin;
+    fin.open(input, ios::in);
+    if (!fin.is_open())
+	{
+		cout << "无法找到这个文件！" << endl;
+	}
+    string s = "";
+    while (getline(fin, s))
+    {
+        // 过滤最后一行的空白
+        if (s.compare("") != 0) data.push_back(atoi(s.c_str()));
+    }
+    fin.close();
+    return data;
+}
 
+// 写出结果到output目录下的文件fileName
+void writeNormResult(vector<int> &data, string fileName)
+{
+    string output = "../output/";
+    output.append(fileName);
+    ofstream fout;
     // 覆盖为ios::app
-    ofs.open(output, ios::out);
+    fout.open(output, ios::out);
+    if (!fout.is_open())
+    {
+        cout << "打开文件失败" << endl;
+        return;
+    }
+    for (int i = 0; i < data.size(); i++)
+    {
+        fout << data[i] << endl;
+    }
+    fout.close();
+}
+
+void generate(string type, string output, int lines) {
+    ofstream fout;
+    // 覆盖为ios::app
+    fout.open(output, ios::out);
+    if (!fout.is_open())
+    {
+        cout << "打开文件失败" << endl;
+    }
     srand((unsigned)time(NULL));
     if (type == "0")
     {
@@ -30,7 +69,7 @@ int main(int argc, char const *argv[])
                 symbol = 1;
             }
             int num = symbol * rand();
-            ofs << num << endl;
+            fout << num << endl;
         }
     } else if(type == "1") {
         for(int i = 0; i < lines; i++)
@@ -49,9 +88,8 @@ int main(int argc, char const *argv[])
             }
             // 解决数字部分为空的情况
             if(num.size() == symbol) num = "0";
-            ofs << num << endl;
+            fout << num << endl;
         }
     }
-    ofs.close();
-    return 0;
+    fout.close();
 }
