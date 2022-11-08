@@ -13,6 +13,7 @@ private:
     std::string m_content;
 
 public:
+    explicit BigInteger() : m_content("0") {};
     explicit BigInteger(std::string& str) : m_content(str) {};
     explicit BigInteger(std::vector<char>& chs) : m_content(std::string(chs.begin(), chs.end())) {};
     explicit BigInteger(std::vector<int>& nums) : m_content(std::string(nums.begin(), nums.end())) {};
@@ -22,6 +23,8 @@ public:
     friend bool operator == (const BigInteger& lhs, const BigInteger& rhs);
     friend bool operator < (const BigInteger& lhs, const BigInteger& rhs);
     friend bool operator > (const BigInteger& lhs, const BigInteger& rhs);
+    friend bool operator <= (const BigInteger& lhs, const BigInteger& rhs);
+    friend bool operator >= (const BigInteger& lhs, const BigInteger& rhs);
 };
 
 bool operator == (const BigInteger& lhs, const BigInteger& rhs) {
@@ -36,6 +39,15 @@ bool operator < (const BigInteger& lhs, const BigInteger& rhs) {
 
 bool operator > (const BigInteger& lhs, const BigInteger& rhs) {
     return operator<(rhs, lhs);
+}
+
+
+bool operator >= (const BigInteger& lhs, const BigInteger& rhs) {
+    return operator<(rhs, lhs) || operator==(lhs, rhs);
+}
+
+bool operator <= (const BigInteger& lhs, const BigInteger& rhs) {
+    return operator<(lhs, rhs) || operator==(lhs, rhs);
 }
 
 #endif //ALGORITHM_BIG_HOMEWORK_2022_BIGINTEGER_H
