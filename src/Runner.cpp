@@ -5,11 +5,13 @@
 #include <vector>
 #include <chrono>
 
-#include "Sortable.h"
-#include "Random.h"
-#include "Validation.h"
+#include "utils/Sortable.h"
+#include "utils/Random.h"
+#include "utils/Validation.h"
 #include "algo/BubbleSort.cpp"
 #include "algo/RadixSort.cpp"
+#include "algo/QuickSort.cpp"
+#include "algo/ShellSort.cpp"
 
 using namespace std;
 
@@ -31,7 +33,9 @@ void run_sort(Sortable* algo, vector<BigInteger>& arr) {
 int main() {
     vector<Sortable*> algos = {
         new BubbleSort(),
-        new RadixSort()
+        new RadixSort(),
+        new QuickSort(),
+        new ShellSort()
     };
 
     vector<int> numCounts = {(int)1e2, (int)1e3, (int)1e4};

@@ -5,10 +5,10 @@
 #include <vector>
 #include <algorithm>
 
-#include "BigInteger.h"
-#include "Random.h"
-#include "Validation.h"
-#include "Sortable.h"
+#include "../utils/BigInteger.h"
+#include "../utils/Random.h"
+#include "../utils/Validation.h"
+#include "../utils/Sortable.h"
 
 using namespace std;
 
