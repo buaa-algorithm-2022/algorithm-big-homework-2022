@@ -1,0 +1,66 @@
+//
+// Created by Jaylen Bian on 2022/11/7.
+//
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#include "BigInteger.h"
+#include "Random.h"
+#include "Validation.h"
+#include "Sortable.h"
+
+using namespace std;
+
+class RadixSort: public Sortable {
+public:
+    void sort(vector<BigInteger>& arr) {
+        size_t maxBit = 0, n = arr.size();
+        for (auto ele: arr)
+            maxBit = max(ele.getContent().length(), maxBit);
+
+        int i, bitVal;
+        vector<int> cnt(10);
+        vector<BigInteger> tmp(arr.begin(), arr.end());
+
+        for (int bit = 1; bit <= maxBit; ++bit) {
+            for (int i = 0; i < 10; ++i)
+                cnt[i] = 0;
+            for (i = 0; i < n; ++i) {
+                const auto content = arr[i].getContent();
+                bitVal = 0;
+                if (content.length() >= bit)
+                    bitVal = content[content.length() - bit] - '0';
+                cnt[bitVal]++;
+            }
+            for (i = 1; i < 10; ++i)
+                cnt[i] += cnt[i-1];
+            for (i = n-1; i >= 0; --i) {
+                const auto content = arr[i].getContent();
+                bitVal = 0;
+                if (content.length() >= bit)
+                    bitVal = content[content.length() - bit] - '0';
+                tmp[cnt[bitVal]-1] = arr[i];
+                cnt[bitVal]--;
+            }
+            for (i = 0; i < n; ++i)
+                arr[i] = tmp[i];
+        }
+    }
+
+    std::string toName() const {
+        return "RadixSort";
+    }
+};
+
+//int main() {
+//    auto nums = rand_bigint_arr(100);
+//    cout << "Before:" << nums << endl;
+//    checkIsInOrder(nums);
+//
+//    RadixSort().sort(nums);
+//    cout << "After:" << nums << endl;
+//    checkIsInOrder(nums);
+//    return 0;
+//}
