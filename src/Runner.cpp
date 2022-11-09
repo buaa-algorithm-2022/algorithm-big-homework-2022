@@ -12,6 +12,8 @@
 #include "algo/RadixSort.cpp"
 #include "algo/QuickSort.cpp"
 #include "algo/ShellSort.cpp"
+#include "algo/SelectionSort.cpp"
+#include "algo/MergeSort.cpp"
 
 using namespace std;
 
@@ -27,7 +29,6 @@ void run_sort(Sortable* algo, vector<BigInteger>& arr) {
     } else {
         cout << "\t  Sorting failed, check your implementation." << endl;
     }
-
 }
 
 int main() {
@@ -35,7 +36,9 @@ int main() {
         new BubbleSort(),
         new RadixSort(),
         new QuickSort(),
-        new ShellSort()
+        new ShellSort(),
+        new SelectionSort(),
+        new MergeSort()
     };
 
     vector<int> numCounts = {(int)1e2, (int)1e3, (int)1e4};
