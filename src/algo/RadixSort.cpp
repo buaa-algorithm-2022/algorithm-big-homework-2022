@@ -21,36 +21,42 @@ public:
             maxBit = max(ele.getContent().length(), maxBit);
 
         int i, bitVal;
-        vector<int> cnt(10);
-        vector<BigInteger> tmp(arr.begin(), arr.end());
+        vector<int> cnt(19); // [-9, 9]
+        vector<BigInteger> bucket(arr.begin(), arr.end());
 
         for (int bit = 1; bit <= maxBit; ++bit) {
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 19; ++i)
                 cnt[i] = 0;
             for (i = 0; i < n; ++i) {
-                const auto content = arr[i].getContent();
-                bitVal = 0;
-                if (content.length() >= bit)
-                    bitVal = content[content.length() - bit] - '0';
+                bitVal = getBitVal(arr[i], bit);
                 cnt[bitVal]++;
             }
-            for (i = 1; i < 10; ++i)
+            for (i = 1; i < 19; ++i)
                 cnt[i] += cnt[i-1];
             for (i = n-1; i >= 0; --i) {
-                const auto content = arr[i].getContent();
-                bitVal = 0;
-                if (content.length() >= bit)
-                    bitVal = content[content.length() - bit] - '0';
-                tmp[cnt[bitVal]-1] = arr[i];
+                bitVal = getBitVal(arr[i], bit);
+                bucket[cnt[bitVal]-1] = arr[i];
                 cnt[bitVal]--;
             }
             for (i = 0; i < n; ++i)
-                arr[i] = tmp[i];
+                arr[i] = bucket[i];
         }
     }
 
     std::string toName() const {
         return "RadixSort";
+    }
+
+private:
+    int getBitVal(BigInteger bigInteger, int bit) {
+        // if negative=true, 9 will map to 0, 8->1, 7->2, ....2->7, 1-8,
+        // if negative=false, 0->9, 1->10, ... 9->18
+        const int ZERO_OFFSET = 9;
+        const auto content = bigInteger.getContent();
+        if (content.length() < bit)
+            return ZERO_OFFSET;
+        int rawVal = content[content.length() - bit] - '0';
+        return bigInteger.isNegative() ? ZERO_OFFSET-rawVal : ZERO_OFFSET+rawVal;
     }
 };
 

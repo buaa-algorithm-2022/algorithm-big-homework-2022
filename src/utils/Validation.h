@@ -17,7 +17,7 @@ std::ostream& operator <<(std::ostream& out, const std::vector<T>& arr) {
 }
 
 std::ostream& operator<<(std::ostream& os, const BigInteger& bigInteger) {
-    os << bigInteger.getContent();
+    os << (bigInteger.isNegative() ? "-" : "") + bigInteger.getContent();
     return os;
 }
 

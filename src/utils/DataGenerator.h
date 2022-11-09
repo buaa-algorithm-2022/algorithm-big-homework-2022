@@ -1,3 +1,6 @@
+#ifndef ALGORITHM_BIG_HOMEWORK_2022_DATA_GENERATOR_H
+#define ALGORITHM_BIG_HOMEWORK_2022_DATA_GENERATOR_H
+
 #include<fstream>
 #include<string>
 #include<stdlib.h>
@@ -94,3 +97,5 @@ void generate(string type, string output, int lines) {
     }
     fout.close();
 }
+
+#endif //ALGORITHM_BIG_HOMEWORK_2022_DATA_GENERATOR_H

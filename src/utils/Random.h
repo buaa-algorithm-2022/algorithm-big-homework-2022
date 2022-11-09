@@ -27,7 +27,7 @@ BigInteger rand_bigint(int bitsLimit) {
         chs[bits-i-1] = rand() % 10 + '0'; // [0, 9)
     }
     chs[0] = (rand() % 9 + 1) + '0';
-    return BigInteger(chs);
+    return BigInteger(chs, rand() % 2 == 0);
 }
 
 #endif //ALGORITHM_BIG_HOMEWORK_2022_RANDOM_H
