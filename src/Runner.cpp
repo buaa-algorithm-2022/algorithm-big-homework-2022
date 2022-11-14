@@ -79,16 +79,17 @@ void run_sort_multitheaded(vector<Sortable*>& algos, vector<BigInteger>& arr) {
 }
 
 int main() {
-    unsigned long const hardware_threads = thread::hardware_concurrency();
-    const unsigned long MAX_THREAD_COUNT = 5;
+    const unsigned long hardware_threads = thread::hardware_concurrency();
+    cout << "[Info] System supported hardware threads: " << hardware_threads << endl;
+    const unsigned long MAX_THREAD_COUNT = 16;
     unsigned long THREAD_COUNT = min(MAX_THREAD_COUNT, hardware_threads != 0 ? hardware_threads : 4);
     vector<vector<Sortable*>> algoLists = {
-        vector<Sortable*>(MAX_THREAD_COUNT, new BubbleSort()),
-        vector<Sortable*>(MAX_THREAD_COUNT, new RadixSort()),
-        vector<Sortable*>(MAX_THREAD_COUNT, new QuickSort()),
-        vector<Sortable*>(MAX_THREAD_COUNT, new ShellSort()),
-        vector<Sortable*>(MAX_THREAD_COUNT, new SelectionSort()),
-        vector<Sortable*>(MAX_THREAD_COUNT, new MergeSort())
+        vector<Sortable*>(THREAD_COUNT, new BubbleSort()),
+        vector<Sortable*>(THREAD_COUNT, new RadixSort()),
+        vector<Sortable*>(THREAD_COUNT, new QuickSort()),
+        vector<Sortable*>(THREAD_COUNT, new ShellSort()),
+        vector<Sortable*>(THREAD_COUNT, new SelectionSort()),
+        vector<Sortable*>(THREAD_COUNT, new MergeSort())
     };
 
     vector<int> numCounts = {(int)1e2, (int)1e3, (int)1e4};
