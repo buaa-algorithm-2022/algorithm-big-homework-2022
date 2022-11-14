@@ -13,7 +13,7 @@ using namespace std;
 
 class QuickSort: public Sortable {
 public:
-    int partition(vector<BigInteger> &L, int low, int high) 
+    int partition(vector<BigInteger> &L, int low, int high)
     {
         BigInteger temp = L[low];
         BigInteger pivotkey = L[low];
