@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main {
     public static void runMaster(Properties properties) throws InterruptedException, IOException {
-        int slaveNumber = Integer.parseInt(properties.getProperty("slave.num"));
+        int slaveAmount = Integer.parseInt(properties.getProperty("slave.amount"));
         ConcurrentLinkedQueue<Thread> threads = new ConcurrentLinkedQueue<>();
-        for (int i = 0; i < slaveNumber; i++) {
+        for (int i = 0; i < slaveAmount; i++) {
             String slaveName = "slave" + i;
             File sendFile = new File(properties.getProperty("data.send.path") + "file" + i + ".txt");
             File receiveFile = new File(properties.getProperty(slaveName + ".input.path") + sendFile.getName());
@@ -35,8 +35,9 @@ public class Main {
                 NettyServer server = new NettyServer();
                 ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(sendFile.getPath());
                 // 发送文件
-                System.out.println("发送文件：" + sendFile.getPath());
+                System.out.println("开始发送文件：" + sendFile.getPath());
                 server.run(Integer.parseInt(properties.getProperty("master.port")), serverHandler);
+                System.out.println("完成发送文件：" + sendFile.getPath());
 
                 NettyClient client = new NettyClient();
                 ChannelInboundHandlerAdapter clientHandler = new AlgoClientHandler(receiveFile.getPath());
@@ -112,18 +113,46 @@ public class Main {
         writer.close();
     }
 
-    public static void runSlave(Properties properties) {
-        
+    public static void runSlave(Properties properties) throws IOException {
+        String slaveName = properties.getProperty("slave.name");
+        String slaveIndex = slaveName.substring(5);
+        // 接收文件
+        NettyClient nettyClient = new NettyClient();
+        AlgoClientHandler handler = new AlgoClientHandler(properties.getProperty(slaveName + ".receive.file"));
+        nettyClient.run(properties.getProperty("master.ip")
+                , Integer.parseInt(properties.getProperty("master.port"))
+                , handler);
+        String command = String.format("./%s --input %s --output %s --sort_type %s"
+                , properties.getProperty("data.sort.process")
+                , properties.getProperty(slaveName + ".receive.file")
+                , properties.getProperty(slaveName + ".send.file")
+                , properties.getProperty("data.sort.type"));
+
+        // 执行C++多线程排序
+        System.out.println("执行命令：" + command);
+        Runtime.getRuntime().exec(command);
+        System.out.println("执行完成：" + command);
+
+        // 发送排序完成的文件
+        NettyServer server = new NettyServer();
+        ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(properties.getProperty(slaveName + ".send.file"));
+        // 发送文件
+        System.out.println("开始发送文件：" + properties.getProperty(slaveName + ".send.file"));
+        server.run(Integer.parseInt(properties.getProperty(slaveName + ".port")), serverHandler);
+        System.out.println("完成发送文件：" + properties.getProperty(slaveName + ".send.file"));
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        long startTime = System.currentTimeMillis();
         Properties properties = PropertiesUtils.load("./run.properties");
         if (properties.getProperty("mode").equals("master")) {
             runMaster(properties);
         } else if (properties.getProperty("mode").equals("slave")) {
-
+            runSlave(properties);
         } else {
             System.out.println("参数错误！");
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("程序用时：" + (endTime - startTime) + "ms...");
     }
 }

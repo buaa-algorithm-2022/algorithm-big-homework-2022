@@ -7,11 +7,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 
-/**
- * @Author zhangliang
- * @Despriction
- * @Date 2022/11/9 00:53
- */
 public class NettyServer {
     public void run(int port, ChannelInboundHandlerAdapter handler) {
         //boosGroup处理连接请求
