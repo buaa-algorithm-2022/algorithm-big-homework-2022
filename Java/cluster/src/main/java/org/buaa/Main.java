@@ -18,9 +18,9 @@ public class Main {
         int slaveNumber = Integer.parseInt(properties.getProperty("slave.num"));
         ConcurrentLinkedQueue<Thread> threads = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < slaveNumber; i++) {
-            File sendFile = new File(properties.getProperty("data.generate.path") + "/file" + i + ".txt");
-            File receiveFile = new File("");
             String slaveName = "slave" + i;
+            File sendFile = new File(properties.getProperty("data.send.path") + "file" + i + ".txt");
+            File receiveFile = new File(properties.getProperty(slaveName + ".input.path") + sendFile.getName());
             String command = "./" + properties.getProperty("data.generate.process ") + sendFile.getPath();
             Thread thread = new Thread(() -> {
                 try {
@@ -34,16 +34,18 @@ public class Main {
                 NettyServer server = new NettyServer();
                 ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(sendFile.getPath());
                 // 发送文件
+                System.out.println("发送文件：" + sendFile.getPath());
                 server.run(Integer.parseInt(properties.getProperty("master.port")), serverHandler);
 
                 NettyClient client = new NettyClient();
-                ChannelInboundHandlerAdapter clientHandler = new AlgoClientHandler(properties.getProperty(slaveName + ".input.path") + sendFile.getName());
+                ChannelInboundHandlerAdapter clientHandler = new AlgoClientHandler(receiveFile.getPath());
+                System.out.println("开始接收文件： " + slaveName + "...");
                 // 接收slave排序完的文件
                 client.run(properties.getProperty(slaveName + ".ip")
                         , Integer.parseInt(properties.getProperty(slaveName + ".port"))
                         , clientHandler);
 
-
+                System.out.println("完成接收文件：" + slaveName);
                 // 执行完成移除线程
                 threads.remove(Thread.currentThread());
             });
@@ -81,6 +83,7 @@ public class Main {
         boolean isOver = false;
         while (!isOver) {
             int count = 0;
+            // 找到最小的索引
             for (int i = 0; i < readerBuffer.length; i++) {
                 if (readerBuffer[i] == null) {
                     count++;
@@ -88,10 +91,13 @@ public class Main {
                     minReader = i;
                 }
             }
+            // 如果所有readerBuffer中的数字都为null，结束Merge
             if (count == readerBuffer.length) {
                 isOver = true;
             } else {
+                // 写出最小的number
                 writer.write(readerBuffer[minReader].toString());
+                // 读取下一个number
                 String num;
                 if ((num = readers.get(minReader).readLine())!= null) {
                     readerBuffer[minReader] = new BigInteger(num);
