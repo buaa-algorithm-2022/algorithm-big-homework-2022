@@ -22,6 +22,7 @@ public class Main {
             File sendFile = new File(properties.getProperty("data.send.path") + "file" + i + ".txt");
             File receiveFile = new File(properties.getProperty(slaveName + ".input.path") + sendFile.getName());
             String command = "./" + properties.getProperty("data.generate.process ") + sendFile.getPath();
+
             Thread thread = new Thread(() -> {
                 try {
                     System.out.println("执行命令：" + command);
@@ -112,14 +113,14 @@ public class Main {
     }
 
     public static void runSlave(Properties properties) {
-
+        
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties properties = PropertiesUtils.load("./run.properties");
-        if (properties.getProperty("model").equals("master")) {
+        if (properties.getProperty("mode").equals("master")) {
             runMaster(properties);
-        } else if (properties.getProperty("model").equals("slave")) {
+        } else if (properties.getProperty("mode").equals("slave")) {
 
         } else {
             System.out.println("参数错误！");
