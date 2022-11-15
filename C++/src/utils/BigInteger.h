@@ -15,12 +15,29 @@ private:
 
 public:
     explicit BigInteger() : m_content("0"), m_isNegative(false) {};
+    explicit BigInteger(std::string& str) {parse(str);};
     explicit BigInteger(std::string& str, bool isNegative) : m_content(str), m_isNegative(isNegative) {};
     explicit BigInteger(std::vector<char>& chs, bool isNegative) : m_content(std::string(chs.begin(), chs.end())), m_isNegative(isNegative) {};
     explicit BigInteger(std::vector<int>& nums, bool isNegative) : m_content(std::string(nums.begin(), nums.end())), m_isNegative(isNegative) {};
 
-    std::string getContent() const { return m_content; };
+    std::string getContent() const {
+        string flag = "";
+        if (m_isNegative) flag += "-";
+        return flag + m_content; 
+    };
+    void parse(string str) {
+        if (str.substr(0, 1) == "-") {
+            m_isNegative = true;
+            m_content = str.substr(1);
+        }
+        m_isNegative = false;
+        m_content = str;
+    }
     bool isNegative() const { return m_content != "0" && m_isNegative; };
+    bool isNegative(string str) const {
+        if (str.substr(0) == "-") return true;
+        return false;
+    }
 
     friend bool operator == (const BigInteger& lhs, const BigInteger& rhs);
     friend bool operator < (const BigInteger& lhs, const BigInteger& rhs);

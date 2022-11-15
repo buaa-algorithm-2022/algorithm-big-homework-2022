@@ -7,16 +7,15 @@
 #include<time.h>
 #include<random>
 #include<iostream>
+#include "BigInteger.h"
 
 using namespace std;
 
 // 从input目录下读取文件fileName
-vector<int> loadNormData(vector<int> &data, string fileName)
+vector<int> loadData(vector<int> &data, string filePath)
 {
-    string input = "../input/";
-    input.append(fileName);
     ifstream fin;
-    fin.open(input, ios::in);
+    fin.open(filePath, ios::in);
     if (!fin.is_open())
 	{
 		cout << "无法找到这个文件！" << endl;
@@ -31,14 +30,31 @@ vector<int> loadNormData(vector<int> &data, string fileName)
     return data;
 }
 
-// 写出结果到output目录下的文件fileName
-void writeNormResult(vector<int> &data, string fileName)
+vector<BigInteger> loadData(vector<BigInteger> &data, string filePath)
 {
-    string output = "../output/";
-    output.append(fileName);
+    ifstream fin;
+    fin.open(filePath, ios::in);
+    if (!fin.is_open())
+	{
+		cout << "无法找到这个文件！" << endl;
+	}
+    string s = "";
+    while (getline(fin, s))
+    {
+        // 过滤最后一行的空白
+        if (s.compare("") != 0) data.push_back(BigInteger(s));
+    }
+    fin.close();
+    return data;
+}
+
+
+// 写出结果到output目录下的文件fileName
+void writeResult(vector<int> &data, string filePath)
+{
     ofstream fout;
     // 覆盖为ios::app
-    fout.open(output, ios::out);
+    fout.open(filePath, ios::out);
     if (!fout.is_open())
     {
         cout << "打开文件失败" << endl;
@@ -51,17 +67,35 @@ void writeNormResult(vector<int> &data, string fileName)
     fout.close();
 }
 
-void generate(string type, string output, int lines) {
+void writeResult(vector<BigInteger> &data, string filePath)
+{
     ofstream fout;
     // 覆盖为ios::app
-    fout.open(output, ios::out);
+    fout.open(filePath, ios::out);
+    if (!fout.is_open())
+    {
+        cout << "打开文件失败" << endl;
+        return;
+    }
+    for (int i = 0; i < data.size(); i++)
+    {
+        fout << data[i].getContent() << endl;
+    }
+    fout.close();
+}
+
+
+void generateFile(string type, string filePath, int lines) {
+    ofstream fout;
+    // 覆盖为ios::app
+    fout.open(filePath, ios::out);
     if (!fout.is_open())
     {
         cout << "打开文件失败" << endl;
         return;
     }
     srand((unsigned)time(NULL));
-    if (type == "0")
+    if (type == "int")
     {
         for(int i = 0; i < lines; i++)
         {
@@ -75,7 +109,7 @@ void generate(string type, string output, int lines) {
             int num = symbol * rand();
             fout << num << endl;
         }
-    } else if(type == "1") {
+    } else if(type == "bigint") {
         for(int i = 0; i < lines; i++)
         {
             string num = "";
