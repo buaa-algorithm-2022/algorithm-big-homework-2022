@@ -111,4 +111,4 @@ https://www.runoob.com/git/git-basic-operations.html
 # 排序算法实现
 ## 分布式架构
 
-<img src=./data/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8E%92%E5%BA%8F.jpg width=70% />
+<img src=./data/distributed_architecture.jpg width=70% />
