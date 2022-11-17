@@ -107,3 +107,8 @@ https://www.runoob.com/git/git-basic-operations.html
 
 ## 代码提交规范
 每个人创建自己的分支。修改都是基于自己的分支，修改完成后提交merge请求，代码审核通过后merge到main分支。
+
+# 排序算法实现
+## 分布式架构
+
+<img src=./data/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8E%92%E5%BA%8F.jpg width=70% />
