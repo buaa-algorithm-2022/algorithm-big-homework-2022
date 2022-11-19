@@ -129,6 +129,13 @@ https://blog.csdn.net/ys676623/article/details/78111196
 
 ## 基数排序分析
 
-## 分布式架构
+## 随机数生成实现
 
+## 大整数实现
+
+## 多线程实现
+
+## 分布式实现
+
+### 分布式结构
 <img src=./data/distributed_architecture.jpg width=70% />
