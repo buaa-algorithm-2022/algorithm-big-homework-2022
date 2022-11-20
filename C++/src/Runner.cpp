@@ -94,25 +94,19 @@ int main(int argc, char** argv) {
         vector<Sortable*> algos;
         const unsigned long MAX_THREAD_COUNT = 16;
         unsigned long THREAD_COUNT = min(threadCount, hardware_threads != 0 ? hardware_threads : 4);
-        switch (hash_run_time(sortType)) {
-            case "RadixSort"_hash:
-                algos = vector<Sortable*>(THREAD_COUNT, new RadixSort());
-                break;
-            case "QuickSort"_hash:
-                algos = vector<Sortable*>(THREAD_COUNT, new QuickSort());
-                break;
-            case "ShellSort"_hash:
-                algos = vector<Sortable*>(THREAD_COUNT, new ShellSort());
-                break;
-            case "SelectionSort"_hash:
-                algos = vector<Sortable*>(THREAD_COUNT, new SelectionSort());
-                break;
-            case "MergeSort"_hash:
-                algos = vector<Sortable*>(THREAD_COUNT, new MergeSort());
-                break;
-            default:
-                cout << "Algorithm not founded, please try again." << endl;
-                return 1;
+        if (strcmp(sortType, "RadixSort") == 0) {
+            algos = vector<Sortable *>(THREAD_COUNT, new RadixSort());
+        } else if (strcmp(sortType, "QuickSort") == 0) {
+            algos = vector<Sortable *>(THREAD_COUNT, new QuickSort());
+        } else if (strcmp(sortType, "ShellSort") == 0) {
+            algos = vector<Sortable *>(THREAD_COUNT, new ShellSort());
+        } else if (strcmp(sortType, "SelectionSort") == 0) {
+            algos = vector<Sortable *>(THREAD_COUNT, new SelectionSort());
+        } else if (strcmp(sortType, "MergeSort") == 0) {
+            algos = vector<Sortable *>(THREAD_COUNT, new MergeSort());
+        } else {
+            cout << "Algorithm not founded, please try again." << endl;
+            return 1;
         }
         run_sort_multithreaded(algos, datas);
 
