@@ -224,11 +224,11 @@ https://blog.csdn.net/ys676623/article/details/78111196
 
 分布式部分使用Java语言实现。代码中使用了通信框架Netty来建立TCP连接传送文件。
 ### 4.10.2 程序执行流程
-1、首先启动Master，Master节点会生成slave.amount份配置文件。然后启动slave.amount个TCP Server向slave发送文件。
-2、slave与master的相应端口建立连接，接收文件。
-3、slave调用命令行工具执行C++编译的多线程排序文件进行排序。
-4、slave将排好序的文件发送给master。
-5、master收到所有slave排序完成的文件后进行文件的merge，最终生成结果文件。
+1、首先启动Master，Master节点会生成slave.amount份配置文件。然后启动slave.amount个TCP Server向slave发送文件。  
+2、slave与master的相应端口建立连接，接收文件。  
+3、slave调用命令行工具执行C++编译的多线程排序文件进行排序。  
+4、slave将排好序的文件发送给master。  
+5、master收到所有slave排序完成的文件后进行文件的merge，最终生成结果文件。  
 
 ### 4.10.3 程序结构
 程序的运行基于配置文件run.properties，master配置文件如下：
