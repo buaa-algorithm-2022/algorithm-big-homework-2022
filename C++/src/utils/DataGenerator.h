@@ -18,7 +18,7 @@ vector<int> loadIntData(string filePath)
     fin.open(filePath, ios::in);
     if (!fin.is_open())
 	{
-		cout << "无法找到这个文件！" << endl;
+        cout << "[Error] Can't open file, please try again！" << endl;
 	}
     string s = "";
     vector<int> data;
@@ -28,7 +28,7 @@ vector<int> loadIntData(string filePath)
         if (s.compare("") != 0) data.push_back(atoi(s.c_str()));
     }
     fin.close();
-    cout << "加载完成" << endl;
+    cout << "[Info] Did load data (size =" << data.size() << ") from: " << filePath <<  endl;
     return data;
 }
 
@@ -38,7 +38,7 @@ vector<BigInteger> loadBigIntegerData(string filePath)
     fin.open(filePath, ios::in);
     if (!fin.is_open())
 	{
-		cout << "无法找到这个文件！" << endl;
+        cout << "[Error] Can't open file, please try again！" << endl;
 	}
     string s = "";
     vector<BigInteger> data;
@@ -48,7 +48,8 @@ vector<BigInteger> loadBigIntegerData(string filePath)
         if (s.compare("") != 0) data.push_back(BigInteger(s));
     }
     fin.close();
-    cout << "加载完成" << endl;
+    cout << "[Info] Did load data (size =" << data.size() << ") from: " << filePath <<  endl;
+
     return data;
 }
 
@@ -61,7 +62,7 @@ void writeResult(vector<int> &data, string filePath)
     fout.open(filePath, ios::out);
     if (!fout.is_open())
     {
-        cout << "打开文件失败" << endl;
+        cout << "[Error] Can't open file, please try again！" << endl;
         return;
     }
     for (int i = 0; i < data.size(); i++)
@@ -78,7 +79,7 @@ void writeResult(vector<BigInteger> &data, string filePath)
     fout.open(filePath, ios::out);
     if (!fout.is_open())
     {
-        cout << "打开文件失败" << endl;
+        cout << "[Error] Can't open file, please try again！" << endl;
         return;
     }
     for (int i = 0; i < data.size(); i++)
@@ -86,7 +87,7 @@ void writeResult(vector<BigInteger> &data, string filePath)
         fout << data[i] << endl;
     }
     fout.close();
-    cout << "保存完成" << endl;
+    cout << "[Info] Did save data to: " << filePath << endl;
 }
 
 
@@ -96,7 +97,7 @@ void generateFile(string type, string filePath, int lines) {
     fout.open(filePath, ios::out);
     if (!fout.is_open())
     {
-        cout << "打开文件失败" << endl;
+        cout << "[Error] Can't open file, please try again！" << endl;
         return;
     }
     srand((unsigned)time(NULL));
@@ -135,7 +136,7 @@ void generateFile(string type, string filePath, int lines) {
         }
     }
     fout.close();
-    cout << "保存完成" << endl;
+    cout << "[Info] Did save data to: " << filePath << endl;
 }
 
 #endif //ALGORITHM_BIG_HOMEWORK_2022_DATA_GENERATOR_H

@@ -97,14 +97,22 @@ int main(int argc, char** argv) {
         switch (hash_run_time(sortType)) {
             case "RadixSort"_hash:
                 algos = vector<Sortable*>(THREAD_COUNT, new RadixSort());
+                break;
             case "QuickSort"_hash:
                 algos = vector<Sortable*>(THREAD_COUNT, new QuickSort());
+                break;
             case "ShellSort"_hash:
                 algos = vector<Sortable*>(THREAD_COUNT, new ShellSort());
+                break;
             case "SelectionSort"_hash:
                 algos = vector<Sortable*>(THREAD_COUNT, new SelectionSort());
+                break;
             case "MergeSort"_hash:
                 algos = vector<Sortable*>(THREAD_COUNT, new MergeSort());
+                break;
+            default:
+                cout << "Algorithm not founded, please try again." << endl;
+                return 1;
         }
         run_sort_multithreaded(algos, datas);
 
