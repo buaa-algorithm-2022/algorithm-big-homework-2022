@@ -9,9 +9,6 @@ import io.netty.util.CharsetUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 
 public class AlgoClientHandler extends ChannelInboundHandlerAdapter {
     File file;

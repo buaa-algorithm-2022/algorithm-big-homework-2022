@@ -25,6 +25,7 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
+            System.out.println("开始发送文件：" + file.getPath());
             String msg;
             while ((msg = reader.readLine()) != null) {
                 ctx.writeAndFlush(Unpooled.copiedBuffer(msg + "\n", CharsetUtil.UTF_8));
@@ -41,7 +42,9 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
                 }
             }
         }
+        System.out.println("文件发送结束：" + file.getPath());
         ctx.writeAndFlush(Unpooled.copiedBuffer("over", CharsetUtil.UTF_8));
+        System.out.println("发送over");
     }
 
     @Override

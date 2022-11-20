@@ -28,18 +28,22 @@ public class Main {
                 try {
                     System.out.println("执行命令：" + command);
                     // 生成文件
-                    Runtime.getRuntime().exec(command);
+                    Process process = Runtime.getRuntime().exec(command);
+                    process.waitFor();
+                    process.destroy();
+
                     System.out.println("执行完成：" + command);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 NettyServer server = new NettyServer();
                 ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(sendFile.getPath());
                 // 发送文件
-                System.out.println("开始发送文件：" + sendFile.getPath());
+                System.out.println("Server for " + slaveName + " start...");
                 server.run(Integer.parseInt(properties.getProperty(String.format("master.%s.port", slaveName))), serverHandler);
-                System.out.println("完成发送文件：" + sendFile.getPath());
-
+                System.out.println("Server for " + slaveName + " close...");
                 NettyClient client = new NettyClient();
                 ChannelInboundHandlerAdapter clientHandler = new AlgoClientHandler(receiveFile.getPath());
                 System.out.println("开始从"
@@ -125,7 +129,6 @@ public class Main {
     public static void runSlave(Properties properties) throws IOException, InterruptedException {
         String slaveName = properties.getProperty("slave.name");
         System.out.println("slave.name=" + slaveName);
-        String slaveIndex = slaveName.substring(5);
         // 接收文件
         NettyClient nettyClient = new NettyClient();
         AlgoClientHandler handler = new AlgoClientHandler(properties.getProperty(slaveName + ".receive.file"));
@@ -138,6 +141,7 @@ public class Main {
         });
         receviceClient.start();
         while (!handler.isOver) {
+            System.out.println("wait over");
             Thread.sleep(500);
         }
         String command = String.format("%s %s %s %s %s"
@@ -149,7 +153,9 @@ public class Main {
 
         // 执行C++多线程排序
         System.out.println("执行命令：" + command);
-        Runtime.getRuntime().exec(command);
+        Process process = Runtime.getRuntime().exec(command);
+        process.waitFor();
+        process.destroy();
         System.out.println("执行完成：" + command);
 
         // 发送排序完成的文件
@@ -159,12 +165,10 @@ public class Main {
             server.run(Integer.parseInt(properties.getProperty(slaveName + ".port")), serverHandler);
         });
         // 发送文件
-        System.out.println("开始发送文件：" + properties.getProperty(slaveName + ".send.file"));
         sendServer.start();
         // 通知Server关闭连接
         handler.isClose = true;
         sendServer.join();
-        System.out.println("完成发送文件：" + properties.getProperty(slaveName + ".send.file"));
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
