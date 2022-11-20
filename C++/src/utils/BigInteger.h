@@ -28,7 +28,8 @@ public:
             m_isNegative = true;
             m_content = str.substr(1);
         } else {
-
+            m_isNegative = false;
+            m_content = str;
         }
     }
     bool isNegative() const { return m_content != "0" && m_isNegative; };
