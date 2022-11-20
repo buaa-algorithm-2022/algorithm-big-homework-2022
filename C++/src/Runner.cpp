@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
                 vector<Sortable*>(THREAD_COUNT, new MergeSort())
         };
 
-        vector<int> numCounts = {(int)1e2, (int)1e3, (int)1e6};
+        vector<int> numCounts = {(int)1e2, (int)1e3, (int)1e4, (int)1e5};
 
         for (int i = 0; i < numCounts.size(); ++i) {
             cout << "Running round " << i+1 << ", datasize = " << numCounts[i] << endl;
