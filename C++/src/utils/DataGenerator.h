@@ -12,7 +12,7 @@
 using namespace std;
 
 // 从input目录下读取文件fileName
-vector<int> loadData(vector<int> &data, string filePath)
+vector<int> loadIntData(string filePath)
 {
     ifstream fin;
     fin.open(filePath, ios::in);
@@ -21,16 +21,18 @@ vector<int> loadData(vector<int> &data, string filePath)
 		cout << "无法找到这个文件！" << endl;
 	}
     string s = "";
+    vector<int> data;
     while (getline(fin, s))
     {
         // 过滤最后一行的空白
         if (s.compare("") != 0) data.push_back(atoi(s.c_str()));
     }
     fin.close();
+    cout << "加载完成" << endl;
     return data;
 }
 
-vector<BigInteger> loadData(vector<BigInteger> &data, string filePath)
+vector<BigInteger> loadBigIntegerData(string filePath)
 {
     ifstream fin;
     fin.open(filePath, ios::in);
@@ -39,12 +41,14 @@ vector<BigInteger> loadData(vector<BigInteger> &data, string filePath)
 		cout << "无法找到这个文件！" << endl;
 	}
     string s = "";
+    vector<BigInteger> data;
     while (getline(fin, s))
     {
         // 过滤最后一行的空白
         if (s.compare("") != 0) data.push_back(BigInteger(s));
     }
     fin.close();
+    cout << "加载完成" << endl;
     return data;
 }
 
@@ -79,9 +83,10 @@ void writeResult(vector<BigInteger> &data, string filePath)
     }
     for (int i = 0; i < data.size(); i++)
     {
-        fout << data[i].getContent() << endl;
+        fout << data[i] << endl;
     }
     fout.close();
+    cout << "保存完成" << endl;
 }
 
 
@@ -130,6 +135,7 @@ void generateFile(string type, string filePath, int lines) {
         }
     }
     fout.close();
+    cout << "保存完成" << endl;
 }
 
 #endif //ALGORITHM_BIG_HOMEWORK_2022_DATA_GENERATOR_H

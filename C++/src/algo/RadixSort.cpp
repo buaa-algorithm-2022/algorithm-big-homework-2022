@@ -49,14 +49,10 @@ public:
 
 private:
     int getBitVal(BigInteger bigInteger, int bit) {
-        // if negative=true, 9 will map to 0, 8->1, 7->2, ....2->7, 1-8,
-        // if negative=false, 0->9, 1->10, ... 9->18
-        const int ZERO_OFFSET = 9;
         const auto content = bigInteger.getContent();
-        if (content.length() < bit)
-            return ZERO_OFFSET;
-        int rawVal = content[content.length() - bit] - '0';
-        return bigInteger.isNegative() ? ZERO_OFFSET-rawVal : ZERO_OFFSET+rawVal;
+        int rawVal = content.length() < bit ? 0 : (content[content.length() - bit] - '0');
+        if (bigInteger.isNegative()) rawVal *= -1;
+        return rawVal + 9;
     }
 };
 
