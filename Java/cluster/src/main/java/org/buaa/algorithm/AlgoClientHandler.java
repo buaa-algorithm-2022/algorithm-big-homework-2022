@@ -15,8 +15,10 @@ import java.nio.file.StandardOpenOption;
 public class AlgoClientHandler extends ChannelInboundHandlerAdapter {
     File file;
     BufferedWriter bw;
-    boolean isOver = false;
+    public boolean isOver = false;
     String buffer = "";
+
+    public boolean isClose = true;
 
     public AlgoClientHandler(String path) {
         this.file = new File(path);
@@ -25,7 +27,7 @@ public class AlgoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        System.out.println("建立连接：" + ctx.channel().remoteAddress());
+        System.out.println("Client建立连接：" + ctx.channel().remoteAddress());
         if (!file.exists()) {
             if (file.createNewFile()) {
                 System.out.println("创建文件：" + file.getPath());
@@ -56,9 +58,13 @@ public class AlgoClientHandler extends ChannelInboundHandlerAdapter {
         if (isOver) {
             bw.close();
             System.out.println("写文件结束...");
+            // 等待排序结束
+            while(!isClose) {
+                Thread.sleep(500);
+            }
             ctx.writeAndFlush(Unpooled.copiedBuffer("over", CharsetUtil.UTF_8));
             ctx.channel().closeFuture();
-            System.out.println("断开连接: " + ctx.channel().remoteAddress());
+            System.out.println("Client断开连接: " + ctx.channel().remoteAddress());
         }
     }
 
