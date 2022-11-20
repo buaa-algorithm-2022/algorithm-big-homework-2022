@@ -20,8 +20,9 @@ public class Main {
         for (int i = 0; i < slaveAmount; i++) {
             String slaveName = "slave" + i;
             File sendFile = new File(properties.getProperty("data.send.path") + "file" + i + ".txt");
-            File receiveFile = new File(properties.getProperty(slaveName + ".input.path") + sendFile.getName());
-            String command = "./" + properties.getProperty("data.generate.process ") + sendFile.getPath();
+            File receiveFile = new File(properties.getProperty("data.receive.path") + slaveName + ".txt");
+            String command = properties.getProperty("data.generate.process")
+                    + " bigint " + sendFile.getPath() + " " + properties.getProperty("data.generate.rows");
 
             Thread thread = new Thread(() -> {
                 try {
@@ -36,18 +37,20 @@ public class Main {
                 ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(sendFile.getPath());
                 // 发送文件
                 System.out.println("开始发送文件：" + sendFile.getPath());
-                server.run(Integer.parseInt(properties.getProperty("master.port")), serverHandler);
+                server.run(Integer.parseInt(properties.getProperty(String.format("master.%s.port", slaveName))), serverHandler);
                 System.out.println("完成发送文件：" + sendFile.getPath());
 
                 NettyClient client = new NettyClient();
                 ChannelInboundHandlerAdapter clientHandler = new AlgoClientHandler(receiveFile.getPath());
-                System.out.println("开始接收文件： " + slaveName + "...");
+                System.out.println("开始从"
+                        + properties.getProperty(slaveName + ".ip") + ":" + properties.getProperty(slaveName + ".port")
+                        + "接收文件： " + receiveFile.getPath() + "...");
                 // 接收slave排序完的文件
                 client.run(properties.getProperty(slaveName + ".ip")
                         , Integer.parseInt(properties.getProperty(slaveName + ".port"))
                         , clientHandler);
 
-                System.out.println("完成接收文件：" + slaveName);
+                System.out.println("完成接收文件：" + receiveFile.getPath());
                 // 执行完成移除线程
                 threads.remove(Thread.currentThread());
             });
@@ -57,6 +60,7 @@ public class Main {
         // 启动所有线程
         for (Thread t : threads) {
             t.start();
+            Thread.sleep(1000);
         }
         // 等待所有线程执行结束
         for (Thread t : threads) {
@@ -68,16 +72,21 @@ public class Main {
         ArrayList<BufferedReader> readers = new ArrayList<>();
         assert receiveFiles != null;
         for (File f : receiveFiles) {
-            readers.add(new BufferedReader(new FileReader(f.getPath())));
+            if (f.getName().startsWith("slave")) {
+                readers.add(new BufferedReader(new FileReader(f.getPath())));
+                System.out.println("BufferedReader add: " + f.getPath());
+            }
         }
         // 设置读取缓冲数组
         BigInteger[] readerBuffer = new BigInteger[readers.size()];
 
         for (int i = 0; i < readers.size(); i++) {
-            BufferedReader reader = readers.get(0);
+            BufferedReader reader = readers.get(i);
             String num;
             if ((num = reader.readLine()) != null) {
-                readerBuffer[i] = new BigInteger(num);
+                if (!num.isEmpty()) {
+                    readerBuffer[i] = new BigInteger(num);
+                }
             }
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(properties.getProperty("data.merge.file")));
@@ -89,7 +98,7 @@ public class Main {
             for (int i = 0; i < readerBuffer.length; i++) {
                 if (readerBuffer[i] == null) {
                     count++;
-                } else if (readerBuffer[minReader].compareTo(readerBuffer[i]) > 0) {
+                } else if (readerBuffer[minReader] == null || readerBuffer[minReader].compareTo(readerBuffer[i]) > 0) {
                     minReader = i;
                 }
             }
@@ -98,10 +107,10 @@ public class Main {
                 isOver = true;
             } else {
                 // 写出最小的number
-                writer.write(readerBuffer[minReader].toString());
+                writer.write(readerBuffer[minReader].toString() + "\n");
                 // 读取下一个number
-                String num;
-                if ((num = readers.get(minReader).readLine())!= null) {
+                String num = readers.get(minReader).readLine();
+                if (num != null && !num.isEmpty()) {
                     readerBuffer[minReader] = new BigInteger(num);
                 } else readerBuffer[minReader] = null;
             }
@@ -113,20 +122,30 @@ public class Main {
         writer.close();
     }
 
-    public static void runSlave(Properties properties) throws IOException {
+    public static void runSlave(Properties properties) throws IOException, InterruptedException {
         String slaveName = properties.getProperty("slave.name");
+        System.out.println("slave.name=" + slaveName);
         String slaveIndex = slaveName.substring(5);
         // 接收文件
         NettyClient nettyClient = new NettyClient();
         AlgoClientHandler handler = new AlgoClientHandler(properties.getProperty(slaveName + ".receive.file"));
-        nettyClient.run(properties.getProperty("master.ip")
-                , Integer.parseInt(properties.getProperty("master.port"))
-                , handler);
-        String command = String.format("./%s --input %s --output %s --sort_type %s"
+        // 设置关闭等待
+        handler.isClose = false;
+        Thread receviceClient = new Thread(() -> {
+            nettyClient.run(properties.getProperty("master.ip")
+                    , Integer.parseInt(properties.getProperty(String.format("master.%s.port", slaveName)))
+                    , handler);
+        });
+        receviceClient.start();
+        while (!handler.isOver) {
+            Thread.sleep(500);
+        }
+        String command = String.format("%s %s %s %s %s"
                 , properties.getProperty("data.sort.process")
                 , properties.getProperty(slaveName + ".receive.file")
                 , properties.getProperty(slaveName + ".send.file")
-                , properties.getProperty("data.sort.type"));
+                , properties.getProperty("data.sort.type")
+                , properties.getProperty("slave.thread.amount"));
 
         // 执行C++多线程排序
         System.out.println("执行命令：" + command);
@@ -136,9 +155,15 @@ public class Main {
         // 发送排序完成的文件
         NettyServer server = new NettyServer();
         ChannelInboundHandlerAdapter serverHandler = new AlgoServerHandler(properties.getProperty(slaveName + ".send.file"));
+        Thread sendServer = new Thread(() -> {
+            server.run(Integer.parseInt(properties.getProperty(slaveName + ".port")), serverHandler);
+        });
         // 发送文件
         System.out.println("开始发送文件：" + properties.getProperty(slaveName + ".send.file"));
-        server.run(Integer.parseInt(properties.getProperty(slaveName + ".port")), serverHandler);
+        sendServer.start();
+        // 通知Server关闭连接
+        handler.isClose = true;
+        sendServer.join();
         System.out.println("完成发送文件：" + properties.getProperty(slaveName + ".send.file"));
     }
 

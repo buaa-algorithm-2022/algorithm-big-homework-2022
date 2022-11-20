@@ -1,0 +1,85 @@
+[Info] System supported hardware threads: 8
+Running round 1, datasize = 100
+	--Start running: RadixSort
+	  Sorting finished, time cost: 4879075ns
+	--Start running: RadixSort with 8 threads
+	  Sorting finished, time cost: 1847979ns
+	--Start running: QuickSort
+	  Sorting finished, time cost: 249815ns
+	--Start running: QuickSort with 8 threads
+	  Sorting finished, time cost: 487792ns
+	--Start running: ShellSort
+	  Sorting finished, time cost: 264289ns
+	--Start running: ShellSort with 8 threads
+	  Sorting finished, time cost: 488888ns
+	--Start running: SelectionSort
+	  Sorting finished, time cost: 1115961ns
+	--Start running: SelectionSort with 8 threads
+	  Sorting finished, time cost: 448997ns
+	--Start running: MergeSort
+	  Sorting finished, time cost: 211779ns
+	--Start running: MergeSort with 8 threads
+	  Sorting finished, time cost: 465813ns
+Running round 2, datasize = 1000
+	--Start running: RadixSort
+	  Sorting finished, time cost: 42995433ns
+	--Start running: RadixSort with 8 threads
+	  Sorting finished, time cost: 12441544ns
+	--Start running: QuickSort
+	  Sorting finished, time cost: 3914222ns
+	--Start running: QuickSort with 8 threads
+	  Sorting finished, time cost: 2433591ns
+	--Start running: ShellSort
+	  Sorting finished, time cost: 4080846ns
+	--Start running: ShellSort with 8 threads
+	  Sorting finished, time cost: 2581909ns
+	--Start running: SelectionSort
+	  Sorting finished, time cost: 88607494ns
+	--Start running: SelectionSort with 8 threads
+	  Sorting finished, time cost: 3996176ns
+	--Start running: MergeSort
+	  Sorting finished, time cost: 2905573ns
+	--Start running: MergeSort with 8 threads
+	  Sorting finished, time cost: 2430090ns
+Running round 3, datasize = 10000
+	--Start running: RadixSort
+	  Sorting finished, time cost: 400224090ns
+	--Start running: RadixSort with 8 threads
+	  Sorting finished, time cost: 124478750ns
+	--Start running: QuickSort
+	  Sorting finished, time cost: 52123889ns
+	--Start running: QuickSort with 8 threads
+	  Sorting finished, time cost: 29641287ns
+	--Start running: ShellSort
+	  Sorting finished, time cost: 74305226ns
+	--Start running: ShellSort with 8 threads
+	  Sorting finished, time cost: 33121491ns
+	--Start running: SelectionSort
+	  Sorting finished, time cost: 8813618124ns
+	--Start running: SelectionSort with 8 threads
+	  Sorting finished, time cost: 269582274ns
+	--Start running: MergeSort
+	  Sorting finished, time cost: 40957820ns
+	--Start running: MergeSort with 8 threads
+	  Sorting finished, time cost: 28940388ns
+Running round 4, datasize = 100000
+	--Start running: RadixSort
+	  Sorting finished, time cost: 6084178262ns
+	--Start running: RadixSort with 8 threads
+	  Sorting finished, time cost: 1530568140ns
+	--Start running: QuickSort
+	  Sorting finished, time cost: 730223258ns
+	--Start running: QuickSort with 8 threads
+	  Sorting finished, time cost: 345213272ns
+	--Start running: ShellSort
+	  Sorting finished, time cost: 1303668971ns
+	--Start running: ShellSort with 8 threads
+	  Sorting finished, time cost: 432836849ns
+	--Start running: SelectionSort
+	  Sorting finished, time cost: 917320417967ns
+	--Start running: SelectionSort with 8 threads
+	  Sorting finished, time cost: 31946444740ns
+	--Start running: MergeSort
+	  Sorting finished, time cost: 640723600ns
+	--Start running: MergeSort with 8 threads
+	  Sorting finished, time cost: 355597282ns

@@ -21,7 +21,7 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("建立连接：" + ctx.channel().remoteAddress());
+        System.out.println("Server建立连接：" + ctx.channel().remoteAddress());
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -42,7 +42,6 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
             }
         }
         ctx.writeAndFlush(Unpooled.copiedBuffer("over", CharsetUtil.UTF_8));
-        ctx.channel().closeFuture();
     }
 
     @Override
@@ -55,7 +54,7 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         if (buffer.contains("over")) {
-            System.out.println("断开连接：" + ctx.channel().remoteAddress());
+            System.out.println("Server断开连接：" + ctx.channel().remoteAddress());
             ctx.channel().close();
             ctx.channel().parent().close();
         }

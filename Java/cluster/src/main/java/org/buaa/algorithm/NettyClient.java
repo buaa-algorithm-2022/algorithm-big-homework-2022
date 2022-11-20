@@ -38,7 +38,6 @@ public class NettyClient {
         //连接服务器端
         ChannelFuture connect = bootstrap.connect(ip, port);
         try {
-
             //关闭连接
             connect.channel().closeFuture().sync();
         } catch (InterruptedException e) {
