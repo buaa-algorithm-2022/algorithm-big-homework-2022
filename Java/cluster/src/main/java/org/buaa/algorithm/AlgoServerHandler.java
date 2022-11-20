@@ -54,7 +54,7 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         if (buffer.contains("over")) {
-            System.out.println("断开连接：" + ctx.channel().remoteAddress());
+            System.out.println("Server断开连接：" + ctx.channel().remoteAddress());
             ctx.channel().close();
             ctx.channel().parent().close();
         }

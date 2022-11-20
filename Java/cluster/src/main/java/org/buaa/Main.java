@@ -85,7 +85,6 @@ public class Main {
             String num;
             if ((num = reader.readLine()) != null) {
                 if (!num.isEmpty()) {
-                    System.out.println("read: \"" + num + "\"");
                     readerBuffer[i] = new BigInteger(num);
                 }
             }
@@ -146,7 +145,7 @@ public class Main {
                 , properties.getProperty(slaveName + ".receive.file")
                 , properties.getProperty(slaveName + ".send.file")
                 , properties.getProperty("data.sort.type")
-                , properties.getProperty("slave.thread.num"));
+                , properties.getProperty("slave.thread.amount"));
 
         // 执行C++多线程排序
         System.out.println("执行命令：" + command);

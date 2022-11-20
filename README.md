@@ -114,6 +114,10 @@ https://blog.csdn.net/ys676623/article/details/78111196
 - 课程答辩：2022年11月22日
 
 ## 分工
+张梁：项目创建，快速排序、希尔排序，随机数生成，分布式部分
+边俊林：基数排序，大整数实现，多线程部分
+杨小梅：选择排序、归并排序算法实现，PPT制作
+共同参与部分：readme.md文件编写
 
 # 四、排序算法实现
 
@@ -170,35 +174,105 @@ https://blog.csdn.net/ys676623/article/details/78111196
 ### 4.6.1 单线程
 |排序类型|线程数|数据规模|时间|
 |:----------|:----------|:----------|:----------|
-|选择排序|1|100万|ms|
-|归并排序|1|100万|ms|
-|快速排序|1|100万|ms|
-|希尔排序|1|100万|ms|
-|基数排序|1|100万|ms|
+|选择排序|1|1万|8813ms|
+|归并排序|1|1万|40ms|
+|快速排序|1|1万|52ms|
+|希尔排序|1|1万|74ms|
+|基数排序|1|1万|400ms|
+|选择排序|1|10万|917320ms|
+|归并排序|1|10万|640ms|
+|快速排序|1|10万|730ms|
+|希尔排序|1|10万|1303ms|
+|基数排序|1|10万|6084ms|
+
 ### 4.6.2 多线程
 |排序类型|线程数|数据规模|时间|
 |:----------|:----------|:----------|:----------|
-|选择排序|1|100万|ms|
-|归并排序|1|100万|ms|
-|快速排序|1|100万|ms|
-|希尔排序|1|100万|ms|
-|基数排序|1|100万|ms|
+|选择排序|8|1万|269ms|
+|归并排序|8|1万|40ms|
+|快速排序|8|1万|29ms|
+|希尔排序|8|1万|33ms|
+|基数排序|8|1万|124ms|
+|选择排序|8|10万|31946ms|
+|归并排序|8|10万|355ms|
+|快速排序|8|10万|345ms|
+|希尔排序|8|10万|432ms|
+|基数排序|8|10万|1530ms|
+
 ### 4.6.3 分布式
-|排序类型|线程数|数据规模|时间|
-|:----------|:----------|:----------|:----------|
-|选择排序|1|100万|ms|
-|归并排序|1|100万|ms|
-|快速排序|1|100万|ms|
-|希尔排序|1|100万|ms|
-|基数排序|1|100万|ms|
+|排序类型|节点数|总线程数|数据规模|时间|
+|:----------|:----------|:----------|:----------|:----------|
+|选择排序|2|8|100万|ms|
+|归并排序|2|8|100万|ms|
+|快速排序|2|8|100万|ms|
+|希尔排序|2|8|100万|ms|
+|基数排序|2|8|100万|ms|
 
 ## 4.7 随机数生成实现
+由于大整数的位数比较多，采用对随机数%2生成符号位，然后从高位到低位，每次4位，共25次的方式来生成100位的大整数。
 
 ## 4.8 大整数实现
 
 ## 4.9 多线程实现
+<img src=./data/multi_thread.jpg width=50% />
+
+多线程的实现基于分治，对待排序数组划分不同区域，每个区域使用一个线程排序，最终使用归并排序合并结果。
 
 ## 4.10 分布式实现
-
-### 分布式结构
+### 4.10.1 分布式结构
 <img src=./data/distributed_architecture.jpg width=70% />
+
+分布式部分使用Java语言实现。代码中使用了通信框架Netty来建立TCP连接传送文件。
+### 4.10.2 程序执行流程
+1、首先启动Master，Master节点会生成slave.amount份配置文件。然后启动slave.amount个TCP Server向slave发送文件。
+2、slave与master的相应端口建立连接，接收文件。
+3、slave调用命令行工具执行C++编译的多线程排序文件进行排序。
+4、slave将排好序的文件发送给master。
+5、master收到所有slave排序完成的文件后进行文件的merge，最终生成结果文件。
+
+### 4.10.3 程序结构
+程序的运行基于配置文件run.properties，master配置文件如下：
+```
+mode=master
+master.ip=127.0.0.1
+master.slave0.port=8881
+master.slave1.port=8882
+data.generate.process=./generate
+data.generate.rows=10000
+data.send.path=./data/send/
+data.receive.path=./data/receive/
+data.sort.process=./Runner
+data.sort.type=QuickSort
+data.merge.file=./data/result.txt
+
+slave.amount=2
+slave.name=slave1
+slave.thread.amount=3
+
+slave0.ip=127.0.0.1
+slave0.port=8081
+slave0.receive.file=./data/receive/file0.txt
+slave0.send.file=./data/send/slave0.txt
+
+slave1.ip=127.0.0.1
+slave1.port=8082
+slave1.receive.file=./data/receive/file1.txt
+slave1.send.file=./data/send/slave1.txt
+```
+
+目录结构
+```
+./
+├── Runner
+├── cluster.jar
+├── data
+│   ├── receive
+│   │   ├── slave0.txt
+│   │   └── slave1.txt
+│   ├── result.txt
+│   └── send
+│       ├── file0.txt
+│       └── file1.txt
+├── generate
+└── run.properties
+```
