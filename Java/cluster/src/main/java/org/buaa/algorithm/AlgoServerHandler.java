@@ -44,7 +44,6 @@ public class AlgoServerHandler extends ChannelInboundHandlerAdapter {
         }
         System.out.println("文件发送结束：" + file.getPath());
         ctx.writeAndFlush(Unpooled.copiedBuffer("over", CharsetUtil.UTF_8));
-        System.out.println("发送over");
     }
 
     @Override

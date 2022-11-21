@@ -93,6 +93,7 @@ public class Main {
                 }
             }
         }
+        System.out.println("文件merge开始...");
         BufferedWriter writer = new BufferedWriter(new FileWriter(properties.getProperty("data.merge.file")));
         int minReader = 0;
         boolean isOver = false;
@@ -124,6 +125,7 @@ public class Main {
         }
         writer.flush();
         writer.close();
+        System.out.println("文件merge结束...");
     }
 
     public static void runSlave(Properties properties) throws IOException, InterruptedException {
@@ -141,7 +143,6 @@ public class Main {
         });
         receviceClient.start();
         while (!handler.isOver) {
-            System.out.println("wait over");
             Thread.sleep(500);
         }
         String command = String.format("%s %s %s %s %s"
