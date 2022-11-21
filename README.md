@@ -537,9 +537,9 @@ slave1.receive.file=./data/receive/file1.txt
 slave1.send.file=./data/send/slave1.txt
 ```
 
-目录结构
+运行程序目录结构
 ```
-cluster
+master
 ├── Runner
 ├── cluster.jar
 ├── data
