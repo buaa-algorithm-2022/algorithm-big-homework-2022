@@ -120,7 +120,7 @@ make        // 根据Makefile进行编译
 由于大整数排序部分只能使用c或c++完成，c++提供了丰富的公共库，所以排序算法的实现统一使用C++比较好。
 
 ### 大整数排序
-定义为class/struct，通过传入的string初始化。
+定义为class/struct，通过传入的string初始化。 
 实现compare方法。
 
 有两种实现：  
@@ -134,14 +134,15 @@ make        // 根据Makefile进行编译
 https://blog.csdn.net/qq_36622751/article/details/124807254
 
 ## 2、随机森林调研
-
-#### 优点：1）有现成代码（python底层源码），在此基础上上进行优化；2）python有很多封装好的包，可以使用，可以做的很简单，也可以很复杂
-#### 难点：1）算法原理细节需要搞懂，涉及到数学知识；2）需要进行算法分析
+### 优点：
+- 有现成代码（python底层源码），在此基础上上进行优化
+- python有很多封装好的包，可以使用，可以做的很简单，也可以很复杂
+### 难点：
+- 算法原理细节需要搞懂，涉及到数学知识
+- 需要进行算法分析
 
 ### 具体源码
-
-随机森林 https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py
-
+随机森林 https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/_forest.py  
 决策树 （随机森林是由决策树集成）https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/tree/_classes.py
 
 ### 源码参数解读：
@@ -160,10 +161,10 @@ https://blog.csdn.net/ys676623/article/details/78111196
 - 课程答辩：2022年11月22日
 
 ## 分工
-张梁：项目创建、希尔排序，随机数生成，分布式实现
-边俊林：基数排序，大数运算，程序框架，多线程实现
-杨小梅：选择排序、归并排序、快速排序算法实现，PPT制作
-共同参与部分：readme.md文件编写
+张梁：项目创建、希尔排序，随机数生成，分布式实现  
+边俊林：基数排序，大数运算，程序框架，多线程实现  
+杨小梅：选择排序、归并排序、快速排序算法实现，PPT制作  
+共同参与部分：readme.md文件编写  
 
 # 四、排序算法实现
 
@@ -172,12 +173,12 @@ https://blog.csdn.net/ys676623/article/details/78111196
    第i趟排序从序列的后n-i+1（i=1,2,...,n-1)个元素中选择一个值最小的元素与该n-i+1元素的最前面的那个元素交换位置，即与整个序列的第i个位置上的元素交换位置。  
 2、时间复杂度  
    对具体n个元素的序列采用选择排序法，要经过n-1趟排序。  
-   移动次数：元素移动的次数最少为0次（当原始序列为升序时），最多为3（n-1）次（当原始序列为降序时，3是第i趟排序中，值最小元素与未排序的第一个元素交换位置的次数，即代码中交换arr[i]与arr[d]的执行次数）  
-   比较次数：无论序列中元素的初始排列状态如何，第i趟排序要找出值最小元素都需要经过n-i次元素之间的比较。因此，整个排序过程中元素之间的比较总次数为n (n - 1）/ 2 。  
-   因此，算法的时间复杂度为O（n2）。  
+   移动次数：元素移动的次数最少为0次（当原始序列为升序时），最多为3(n-1)次（当原始序列为降序时，3是第i趟排序中，值最小元素与未排序的第一个元素交换位置的次数，即代码中交换arr[i]与arr[d]的执行次数）  
+   比较次数：无论序列中元素的初始排列状态如何，第i趟排序要找出值最小元素都需要经过n-i次元素之间的比较。因此，整个排序过程中元素之间的比较总次数为n(n-1/2 。  
+   因此，算法的时间复杂度为O(n^2)。  
    这个算法的执行效率当n相对小的时候，效率比较快，但是n一旦扩大，效率将会下降明显。  
 3、空间复杂度  
-   值最小元素与未排序的第一个元素交换位置时需要设置一个临时辅助空间，空间复杂度为O（1）。  
+   值最小元素与未排序的第一个元素交换位置时需要设置一个临时辅助空间，空间复杂度为O(1)。  
 4、稳定性  
    由于值最小元素与未排好序的元素中第1个元素的交换动作是在不相邻的元素之间进行的，因而很有可能会改变值相同元素的前后位置，因此选择排序法是一种不稳定的排序方法。  
 
@@ -196,9 +197,9 @@ https://blog.csdn.net/ys676623/article/details/78111196
    由对合并操作的最坏时间复杂度分析我们知道，当两个序列各个元素的大小交叉排列时， C(n)=n-1。  
    <img src=./data/T3.png width=40% />  
    <img src=./data/T4.png width=30% />  
-   综上:2路归并排序的最优时间复杂度和最坏时间复杂度均为$O(log_{2}n)$。  
+   综上:2路归并排序的最优时间复杂度和最坏时间复杂度均为 $O(nlog_{2}n)$。  
 3、空间复杂度  
-   由于该算法需要用到与参加排序的序列同样大小的辅助空间，算法的空间复杂度为O（n）。  
+   由于该算法需要用到与参加排序的序列同样大小的辅助空间，算法的空间复杂度为O(n)。  
 4、稳定性  
    归并排序是一种稳定的排序算法，因为在两个有序子序列的归并过程中，若2个按值有序序列中出现相同元素，merge算法能够使前一个序列中那个相同元素先被复制，从而确保这两个相同元素的相对次序不发生改变。  
    
@@ -226,6 +227,7 @@ https://blog.csdn.net/ys676623/article/details/78111196
 1、核心思想  
 - 首先按照位数从小到大(个、十、百、千、万)进行分配，依次将数据分配到对应的桶中，每次分配完成后按数值从小到大的顺序从桶中依次取出元素重新拼接成数组
 - 由于数值范围为`[1e-100, 1e100]`，为了使基数排序支持负数，故分配19个桶，使用第0~19桶分别存放该位为-9~9的数
+
 算法的描述如下  
 ```c++
 RadixSort(arr,size)
@@ -247,6 +249,7 @@ CountingSort(array, sizeOfArr, place)
 ```
 2、时间复杂度
 令n为输入数组中元素的数量，k为所有数字第i位（个、十、百、千、万）的最大值，在本算法中即k=19（用于支持负数排序，存放[-9,9]），d为所有元素中位数最多数字的位数。
+
 由上述过程图，我们可以知道
 - 计数排序的时间复杂度为O(n+k)
 - 基数排序中循环调用了d次计数排序，故时间复杂度为O(d(n+k))
@@ -293,6 +296,11 @@ CountingSort(array, sizeOfArr, place)
 ### 4.6.3 分布式
 |排序类型|节点数|总线程数|数据规模|时间|
 |:----------|:----------|:----------|:----------|:----------|
+|选择排序|2|8|10万|38028ms|
+|归并排序|2|8|10万|6659ms|
+|快速排序|2|8|10万|8319ms|
+|希尔排序|2|8|10万|8924ms|
+|基数排序|2|8|10万|8449ms|
 |选择排序|2|8|100万|2953575ms|
 |归并排序|2|8|100万|27233ms|
 |快速排序|2|8|100万|27244ms|
@@ -304,6 +312,7 @@ CountingSort(array, sizeOfArr, place)
 
 ## 4.8 大整数实现
 大数的数据结构采用字符串存储数值的绝对值部分，同时使用布尔值存储数值的正负性。
+
 考虑到实际运算中不应存在正0负0，0在存储时正负性永远视为正。
 
 并实现大数间的比较、重载大数输入输出、基于大数生成随机数等操作。部分比较逻辑如下：
@@ -342,28 +351,25 @@ bool operator > (const BigInteger& lhs, const BigInteger& rhs) {
 <img src=./data/multi_thread.jpg width=50% />
 
 多线程的实现基于分治，对待排序数组划分不同区域，每个区域使用一个线程排序，最终使用归并排序合并结果。
-### 4.9.2 目录结构
+
+为了防止开启过多线程造成性能下降，通过线程数=min(用户期望线程数, 系统支持线程数, 数组元素个数)的方式确定最终开启线程数，使性能维持最优。
+
+### 4.9.2 多线程核心实现
+如下述代码所示，根据开启线程数将数据源划分为多块，并分发至多个线程执行：
+```c++
+ vector<vector<BigInteger>> segments(maxThreadCount);
+ vector<thread> threads(maxThreadCount);
+ for (int i = 0; i < maxThreadCount; ++i) {
+     startOffset = i*segmentLength;
+     if (i == maxThreadCount-1)
+         segments[i] = vector<BigInteger>(arr.begin()+startOffset, arr.begin()+len);
+     else
+         segments[i] = vector<BigInteger>(arr.begin()+startOffset, arr.begin()+min(startOffset+segmentLength, len));
+     threads[i] = thread(&Sortable::sort, algos[i], std::ref(segments[i]));
+ }
+ for (auto &thread: threads)
+     thread.join();
 ```
-C++
-├── CMakeLists.txt
-└── src
-    ├── Generate.cpp
-    ├── Runner.cpp
-    ├── algo
-    │   ├── BubbleSort.cpp
-    │   ├── MergeSort.cpp
-    │   ├── QuickSort.cpp
-    │   ├── RadixSort.cpp
-    │   ├── SelectionSort.cpp
-    │   └── ShellSort.cpp
-    └── utils
-        ├── BigInteger.h
-        ├── DataGenerator.h
-        ├── Random.h
-        ├── Sortable.h
-        └── Validation.h
-```
-多线程部分的代码使用了面向对象的思想，将每个排序算法继承Sortable父类，并实现sort方法来，使排序类型可以基于参数选择。
 
 ## 4.10 分布式实现
 ### 4.10.1 分布式结构
@@ -561,9 +567,9 @@ run.properties为配置文件。
 ### 4.10.4 总结
 分布式排序的难点在于进程之间的同步。程序开发中涉及使用TCP文件传输，需要先启动Server，之后启动client进行连接。在Java调用C++程序时也需要等待C++程序执行完成后再执行下一步。此程序有很多的问题，比如进程之间的同步不灵活，没有容错机制等。
 
-当前成熟的分布式计算框架有Hadoop，Spark，Flink等，他们通常有以下的核心功能和组件：
+当前成熟的分布式计算框架有Hadoop，Spark，Flink等，他们通常有以下的核心功能和组件：  
 一致性服务，比如通常使用Zookeeper，它可以提供节点之间的感知，命名空间管理等。  
 容错机制，通常有HA机制，以及更进一步的联邦机制。  
 调度及资源管理，Hadood有Yarn。  
-分布式文件系统，Hadoop有HDFS。
-流式计算，Spark Streaming, Flink Streaming等。
+分布式文件系统，Hadoop有HDFS。  
+流式计算，Spark Streaming, Flink Streaming等。 
