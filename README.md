@@ -517,6 +517,30 @@ Server断开连接：/127.0.0.1:62716
 ```
 
 ### 4.10.3 程序结构
+#### 4.10.3.1 工程结构
+cluster
+├── META-INF
+│   └── MANIFEST.MF
+├── pom.xml
+└── src
+    └── main
+        └── java
+            └── org
+                └── buaa
+                    ├── Main.java
+                    ├── algorithm
+                    │   ├── AlgoClientHandler.java
+                    │   ├── AlgoServerHandler.java
+                    │   ├── Master.java
+                    │   ├── NettyClient.java
+                    │   ├── NettyServer.java
+                    │   ├── Slave1.java
+                    │   └── Slave2.java
+                    ├── run.properties
+                    └── utils
+                        └── PropertiesUtils.java
+
+#### 4.10.3.2 配置文件
 程序的运行基于配置文件run.properties，master配置文件如下：
 ```
 mode=master
@@ -546,7 +570,7 @@ slave1.receive.file=./data/receive/file1.txt
 slave1.send.file=./data/send/slave1.txt
 ```
 
-运行程序目录结构
+#### 4.10.3.3 运行程序目录结构
 ```
 master
 ├── Runner
