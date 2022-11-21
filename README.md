@@ -45,9 +45,10 @@ https://docs.qq.com/sheet/DWU1tSU9JZGlzdEFE?tab=BB08J2
 2、随机森林 https://www.jianshu.com/p/fdcda700d135  
 3、卷积神经网络  
 
-# 二、git说明
+# 二、技术文档
+## Git
 https://www.runoob.com/git/git-basic-operations.html
-## 常用命令
+### 常用命令
 |命令                |说明|
 |:-------------------|:----------|
 |git pull            |拉取当前分支的远程代码 |
@@ -60,9 +61,49 @@ https://www.runoob.com/git/git-basic-operations.html
 |git branch test     |创建分支    |
 |git checkout test   |切换分支    |
 
-## 代码提交规范
+### 代码提交规范
 每个人创建自己的分支。修改都是基于自己的分支，修改完成后提交merge请求，代码审核通过后merge到main分支。
 
+## C++项目
+除分布式模块外，算法实现、工程化结构、单线程/多线程运行部分使用C++编写。<br>
+为了便于独立测试每个函数及合并进行性能测试，项目使用CMake构建，以支持多个main函数的配置。建议使用
+
+### 工程结构
+```
+src
+   -- algo    // 算法实现
+   -- utils   // 工具类
+   Runner.cpp     // 程序入口 (单线程、多线程、性能测试)
+   CMakeLists.txt // 编译配置
+```
+为了便于统一执行算法，项目面向协议开发，算法实现请继承于`Sortable`协议
+```c++
+class Sortable {
+public:
+    virtual void sort(std::vector<BigInteger>& arr) = 0;
+    virtual std::string toName() const = 0;
+};
+```
+
+### 参数配置
+C++工程支持以下两种模式，以命令行执行为例，IDE同理
+- 无参数时，默认执行单线程/多线程性能测试
+`./Runner`
+- 指定数据集、算法及线程数（主要用于分布式场景执行子任务） 
+`./Runner {数据集路径} {输出路径} {执行算法} {线程数}`<br>eg: `./Runner input.txt output.txt QuickSort 10`
+
+### 编译
+#### IDE (以Clion为例)
+当修改文件后，右键`CMakeLists.txt`，选择"Reload CMake Project"即可完成文件同步<br>
+编译、运行、Debug等操作直接使用IDE自带选项
+#### Shell
+> 首先确保已经安装CMake并配置到命令行中
+```c++
+cd C++      // 切换到CMake同级目录
+cmake .     // 根据CMakeLists.txt生成Makefile
+make        // 根据Makefile进行编译
+```
+完成后目录将会生成对应可执行文件（默认为`Runner`）
 
 # 三、作业选题调研
 ## 1、排序算法调研
@@ -114,12 +155,9 @@ https://blog.csdn.net/ys676623/article/details/78111196
 - 课程答辩：2022年11月22日
 
 ## 分工
-张梁：项目创建，快速排序、希尔排序，分布式实现
-
-边俊林：基数排序，大数运算，程序框架，多线程实现
-
-杨小梅：选择排序、归并排序算法实现，PPT制作
-
+张梁：项目创建，快速排序、希尔排序，分布式实现<br>
+边俊林：基数排序，大数运算，程序框架及工具类，多线程实现<br>
+杨小梅：选择排序、归并排序算法实现，PPT制作<br>
 共同参与部分：随机数生成，readme.md文件编写
 
 # 四、排序算法实现
