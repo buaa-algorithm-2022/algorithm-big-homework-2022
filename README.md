@@ -114,10 +114,13 @@ https://blog.csdn.net/ys676623/article/details/78111196
 - 课程答辩：2022年11月22日
 
 ## 分工
-张梁：项目创建，快速排序、希尔排序，随机数生成，分布式部分
-边俊林：基数排序，大整数实现，多线程部分
+张梁：项目创建，快速排序、希尔排序，分布式实现
+
+边俊林：基数排序，大数运算，程序框架，多线程实现
+
 杨小梅：选择排序、归并排序算法实现，PPT制作
-共同参与部分：readme.md文件编写
+
+共同参与部分：随机数生成，readme.md文件编写
 
 # 四、排序算法实现
 
@@ -169,6 +172,43 @@ https://blog.csdn.net/ys676623/article/details/78111196
 4、稳定性：当相同关键字的记录被划分到不同的子表时，可能会改变他们之间的相对次序，因此希尔排序是一种不稳定的排序算法。
 
 ## 4.5 基数排序分析
+1、核心思想  
+- 首先按照位数从小到大(个、十、百、千、万)进行分配，依次将数据分配到对应的桶中，每次分配完成后按数值从小到大的顺序从桶中依次取出元素重新拼接成数组
+- 由于数值范围为`[1e-100, 1e100]`，为了使基数排序支持负数，故分配19个桶，使用第0~19桶分别存放该位为-9~9的数
+算法的描述如下  
+```
+RadixSort(arr,size)
+   1. find max of input array arr. 
+   2. find number of digits d in max. 
+   3. for i = 1 to d
+       3.1 sort the array elements according to ith place digits using CountingSort.
+
+CountingSort(array, sizeOfArr, place)
+   1. k --> the size of count array, size=19 is our case (storing [-9, 9])
+   2. initialize count array with all elements as zeros.
+   3. for i = 0 to (size-1)
+       3.1 find the total count of each unique digit in dth place of elements and store the count at ith index in the count array.
+   4. for i = 0 to k
+       4.1 find the cumulative sum and store it in count array itself. 
+   5. for j = (size-1) to 1
+       5.1 store the elements from input array to output array using index from count array.
+       5.2 decrease count of each element stored by 1.
+```
+2、时间复杂度
+令n为输入数组中元素的数量，k为所有数字第i位（个、十、百、千、万）的最大值，在本算法中即k=19（用于支持负数排序，存放[-9,9]），d为所有元素中位数最多数字的位数。
+由上述过程图，我们可以知道
+- 计数排序的时间复杂度为O(n+k)
+- 基数排序中循环调用了d次计数排序，故时间复杂度为O(d(n+k))
+
+综上，算法总时间复杂度为O(d(n+k)))
+
+3、空间复杂度  
+如过程所示，在技术排序中，我们需要开辟O(k)的空间用于计数，同时O(n)的空间用于存放临时数组。
+
+故算法总空间复杂度为O(n+k)
+  
+4、稳定性分析  
+基数排序是一种稳定的排序算法，因为其将数据分配到桶中的遍历过程是按照原数组顺序的，所以对于将要放入同一个桶中的数据位置较前，从而确保这两个相同元素的相对次序不发生改变。
 
 ## 4.6 性能分析
 ### 4.6.1 单线程
@@ -211,7 +251,40 @@ https://blog.csdn.net/ys676623/article/details/78111196
 ## 4.7 随机数生成实现
 由于大整数的位数比较多，采用对随机数%2生成符号位，然后从高位到低位，每次4位，共25次的方式来生成100位的大整数。
 
-## 4.8 大整数实现
+## 4.8 大数实现
+大数的数据结构采用字符串存储数值的绝对值部分，同时使用布尔值存储数值的正负性。
+考虑到实际运算中不应存在正0负0，0在存储时正负性永远视为正。
+
+并实现大数间的比较、重载大数输入输出、基于大数生成随机数等操作。部分比较逻辑如下：
+
+```c++
+bool operator == (const BigInteger& lhs, const BigInteger& rhs) {
+    if (lhs.m_content == "0" && rhs.m_content == "0")
+        return true;
+    return lhs.m_content == rhs.m_content && lhs.isNegative() == rhs.isNegative();
+}
+
+bool operator < (const BigInteger& lhs, const BigInteger& rhs) {
+    if (lhs == rhs) return false;
+    if (lhs.m_content.size() == rhs.m_content.size()) {
+        if (lhs.isNegative() && rhs.isNegative())
+            return lhs.m_content > rhs.m_content;
+        else if (!lhs.isNegative() && !rhs.isNegative())
+            return lhs.m_content < rhs.m_content;
+        return lhs.isNegative();
+    } else if (lhs.isNegative() && rhs.isNegative()) {
+        return lhs.m_content.size() > rhs.m_content.size();
+    } else if (!lhs.isNegative() && !rhs.isNegative()) {
+        return lhs.m_content.size() < rhs.m_content.size();
+    } else {
+        return lhs.isNegative();
+    }
+}
+
+bool operator > (const BigInteger& lhs, const BigInteger& rhs) {
+    return operator<(rhs, lhs);
+}
+```
 
 ## 4.9 多线程实现
 <img src=./data/multi_thread.jpg width=50% />
