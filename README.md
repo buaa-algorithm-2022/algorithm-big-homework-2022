@@ -67,15 +67,19 @@ https://www.runoob.com/git/git-basic-operations.html
 
 ## C++项目
 除分布式模块外，算法实现、工程化结构、单线程/多线程运行部分使用C++编写。<br>
-为了便于独立测试每个函数及合并进行性能测试，项目使用CMake构建，以支持多个main函数的配置。建议使用
+为了便于独立测试每个函数及合并进行性能测试，项目使用CMake构建，以支持多个main函数的配置。
 
 ### 工程结构
 ```
 src
-   -- algo    // 算法实现
-   -- utils   // 工具类
-   Runner.cpp     // 程序入口 (单线程、多线程、性能测试)
-   CMakeLists.txt // 编译配置
+├── algo    // 算法实现
+├── utils   // 工具类
+│   │── Random.cpp      // 随机数生成
+│   │── BigInteger.cpp  // 大数实现
+│   │── Validation.cpp  // 正确性验证及部分重载方法
+│   └── DataGenerator.cpp  // IO操作Utils 
+├── Runner.cpp     // 程序入口 (单线程、多线程、性能测试)
+└── CMakeLists.txt // 编译配置
 ```
 为了便于统一执行算法，项目面向协议开发，算法实现请继承于`Sortable`协议
 ```c++
