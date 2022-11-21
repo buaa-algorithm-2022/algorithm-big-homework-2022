@@ -348,12 +348,15 @@ bool operator > (const BigInteger& lhs, const BigInteger& rhs) {
 
 ## 4.9 多线程实现
 ### 4.9.1 执行流程
-<img src=./data/multi_thread.jpg width=50% />
+<img src=./data/multi_thread_impl.png width=50% />
 
 多线程的实现基于分治，对待排序数组划分不同区域，每个区域使用一个线程排序，最终使用归并排序合并结果。
 
-为了防止开启过多线程造成性能下降，通过线程数=min(用户期望线程数, 系统支持线程数, 数组元素个数)的方式确定最终开启线程数，使性能维持最优。
-
+为了防止开启过多线程造成性能下降，通过线程数=min(用户期望线程数, 系统支持线程数, 数组元素个数)的方式确定最终开启线程数，使性能维持最优。即：
+```c++
+const unsigned long hardware_threads = thread::hardware_concurrency();
+unsigned long THREAD_COUNT = min(threadCount, hardware_threads != 0 ? hardware_threads : 4);
+```
 ### 4.9.2 多线程核心实现
 如下述代码所示，根据开启线程数将数据源划分为多块，并分发至多个线程执行：
 ```c++
