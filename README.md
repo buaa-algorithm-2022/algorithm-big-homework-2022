@@ -1,6 +1,7 @@
 # algorithm-big-homework-2022
 
-算法大作业的代码仓库。
+算法大作业的代码仓库。  
+地址：https://github.com/buaa-algorithm-2022/algorithm-big-homework-2022
 
 ## 小组成员
 张梁，边俊林，杨小梅
